@@ -11,6 +11,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 
 import org.npj.campanha.model.Campanha;
 import org.npj.campanha.service.CampanhaService;
@@ -28,28 +29,32 @@ public class CampanhaEndpoint {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response incluir(Campanha campanha) {
 		List<Campanha> campanhasAlteradas = campanhaService.salvarCampanha(campanha);
-		return Response.ok(campanhasAlteradas).build();
+		return Response.status(Status.CREATED).entity(campanhasAlteradas).build();
 	}
 	
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<Campanha> buscar() {
+	public Response buscar() {
 		List<Campanha> campanhas = campanhaService.buscarCampanhas();
-		return campanhas;
+		return Response.status(Status.OK).entity(campanhas).build();
 	}
 	
 	@GET
 	@Path("{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Campanha buscarUma(@PathParam("id") Long id) {
+	public Response buscarUma(@PathParam("id") Long id) {
 		Campanha campanha = campanhaService.buscarCampanha(id);
-		return campanha;
+		if(campanha != null) {
+			return Response.status(Status.OK).entity(campanha).build();
+		} else {
+			return Response.status(Status.NOT_FOUND).entity(new Campanha(id)).build();
+		}
 	}
 	
 	@PUT
 	public Response alterar(Campanha campanha) {
 		List<Campanha> campanhasAlteradas = campanhaService.salvarCampanha(campanha);
-		return Response.ok(campanhasAlteradas).build();
+		return Response.status(Status.CREATED).entity(campanhasAlteradas).build();
 	}
 	
 	@DELETE
@@ -57,7 +62,11 @@ public class CampanhaEndpoint {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response deletar(@PathParam("id") Long id) {
 		Campanha campanhaDeletada = campanhaService.deletarCampanha(id);
-		return Response.ok(campanhaDeletada).build();
+		if(campanhaDeletada != null) {
+			return Response.status(Status.OK).entity(campanhaDeletada).build();
+		} else {
+			return Response.status(Status.NOT_FOUND).entity(new Campanha(id)).build();
+		}
 	}
 	
 }
