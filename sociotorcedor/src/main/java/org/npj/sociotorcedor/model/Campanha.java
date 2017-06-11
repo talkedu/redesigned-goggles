@@ -1,4 +1,4 @@
-package org.npj.campanha.model;
+package org.npj.sociotorcedor.model;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -13,6 +13,13 @@ public class Campanha implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	private Long id;
+	private Long idTimeDoCoracao;
+	private Date dataInicial;
+	private Date dataFinal;	
+	
 	public Campanha() {
 		
 	}
@@ -20,13 +27,6 @@ public class Campanha implements Serializable {
 	public Campanha(Long id) {
 		this.id = id; 
 	}
-	
-	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	private Long id;
-	private Long idTimeDoCoracao;
-	private Date dataInicial;
-	private Date dataFinal;
 
 	public Long getId() {
 		return id;

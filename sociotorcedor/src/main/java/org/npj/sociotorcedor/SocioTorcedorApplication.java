@@ -4,9 +4,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class SociotorcedorApplication {
+public class SocioTorcedorApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(SociotorcedorApplication.class, args);
+		SpringApplication.run(SocioTorcedorApplication.class, args);
 	}
 }
