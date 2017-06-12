@@ -1,5 +1,6 @@
 package org.npj.sociotorcedor.endpoint;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.ws.rs.GET;
@@ -32,12 +33,20 @@ public class SocioTorcedorEndpoint {
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response incluir(SocioTorcedor socioTorcedor) {
-		List<Campanha> novasCampanhas = socioTorcedorService.salvarSocioTorcedor(socioTorcedor);
-		if(novasCampanhas.isEmpty()) {
+		
+		SocioTorcedor existente = socioTorcedorService.recuperarSocioTorcedorPeloEmail(socioTorcedor.getEmail());
+		List<Campanha> novasCampanhas = new ArrayList<>();
+		
+		if(existente == null) {
+			socioTorcedorService.salvarSocioTorcedor(socioTorcedor);
 			return Response.status(Status.CREATED).entity(novasCampanhas).build();
 		} else {
-			return Response.status(Status.OK).entity(novasCampanhas).build();
+			if(existente.getIdsCampanhasAssociadas() == null || existente.getIdsCampanhasAssociadas().isEmpty()) {
+				novasCampanhas = socioTorcedorService.buscarNovasCampanhas(socioTorcedor);
+			}
 		}
+		
+		return Response.status(Status.OK).entity(novasCampanhas).build();
 	}
 	
 	@GET
@@ -55,6 +64,7 @@ public class SocioTorcedorEndpoint {
 		if(socioTorcedor == null) {		
 			return Response.status(Status.NOT_FOUND).entity(new SocioTorcedor(idSocioTorcedor)).build();
 		} else {
+			socioTorcedor.setCampanhasAssociadas(socioTorcedorService.buscarCampanhasAssociadas(socioTorcedor));
 			if(socioTorcedor.getIdsCampanhasAssociadas().contains(idCampanha)) {
 				return Response.status(Status.OK).entity(socioTorcedor).build();
 			} else {				

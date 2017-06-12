@@ -19,19 +19,12 @@ public class SocioTorcedorService {
 	@Autowired
 	SocioTorcedorDao socioTorcedorDao;
 	
-	public List<Campanha> salvarSocioTorcedor(SocioTorcedor socioTorcedor) {
-		SocioTorcedor existente = socioTorcedorDao.findByEmail(socioTorcedor.getEmail());
-		List<Campanha> novasCampanhas = new ArrayList<>();
-		
-		if(existente == null) {
-			socioTorcedorDao.save(socioTorcedor);
-		} else {
-			if(socioTorcedor.getIdsCampanhasAssociadas() == null || socioTorcedor.getIdsCampanhasAssociadas().isEmpty()) {
-				novasCampanhas = buscarNovasCampanhas(socioTorcedor);
-			}
-		}
-		
-		return novasCampanhas;
+	public void salvarSocioTorcedor(SocioTorcedor socioTorcedor) {
+		socioTorcedorDao.save(socioTorcedor);
+	}
+	
+	public SocioTorcedor recuperarSocioTorcedorPeloEmail(String email) {
+		return socioTorcedorDao.findByEmail(email);
 	}
 
 	public List<SocioTorcedor> buscarSociosTorcedores() {
@@ -49,14 +42,20 @@ public class SocioTorcedorService {
 		return socioTorcedor;
 	}
 
-	private List<Campanha> buscarNovasCampanhas(SocioTorcedor socioTorcedor) {
-		return campanhaService.buscarCampanhas()
-				.stream()
-				.filter(c -> socioTorcedor.getIdTimeDoCoracao().equals(c.getIdTimeDoCoracao()))
-				.collect(Collectors.toList());
+	public List<Campanha> buscarNovasCampanhas(SocioTorcedor socioTorcedor) {
+		List<Campanha> campanhas = campanhaService.buscarCampanhas();
+		if(campanhas != null) {
+			return campanhaService.buscarCampanhas()
+					.stream()
+					.filter(c -> socioTorcedor.getIdTimeDoCoracao().equals(c.getIdTimeDoCoracao()))
+					.collect(Collectors.toList());
+		} else {
+			return null;
+		}
+		
 	}
 
-	private List<Campanha> buscarCampanhasAssociadas(SocioTorcedor socioTorcedor) {
+	public List<Campanha> buscarCampanhasAssociadas(SocioTorcedor socioTorcedor) {
 		List<Campanha> campanhasAssociadas = new ArrayList<>();
 		
 		socioTorcedor
@@ -68,7 +67,6 @@ public class SocioTorcedorService {
 
 	public SocioTorcedor recuperarSocioTorcedorPeloId(Long idSocioTorcedor) {
 		SocioTorcedor socioTorcedor = socioTorcedorDao.findOne(idSocioTorcedor);
-		socioTorcedor.setCampanhasAssociadas(buscarCampanhasAssociadas(socioTorcedor));
 		return socioTorcedor;
 	}
 

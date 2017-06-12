@@ -1,5 +1,6 @@
 package org.npj.sociotorcedor.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.ws.rs.client.Client;
@@ -19,17 +20,25 @@ public class CampanhaService {
 	private Client client = ClientBuilder.newClient();
 	
 	public Campanha recuperarCampanhaPorId(Long id) {
-		return client
-				.target(CAMPANHA_URL)
-				.path(String.valueOf(id))
-				.request(MediaType.APPLICATION_JSON)
-				.get(Campanha.class);
+		try {
+			return client
+					.target(CAMPANHA_URL)
+					.path(String.valueOf(id))
+					.request(MediaType.APPLICATION_JSON)
+					.get(Campanha.class);
+		} catch (Exception e) {
+			return null;
+		}
 	}
 	
 	public List<Campanha> buscarCampanhas() {
-		return client
-				.target(CAMPANHA_URL)
-				.request(MediaType.APPLICATION_JSON)
-				.get(new GenericType<List<Campanha>> (){});
+		try {
+			return client
+					.target(CAMPANHA_URL)
+					.request(MediaType.APPLICATION_JSON)
+					.get(new GenericType<List<Campanha>> (){});
+		} catch (Exception e) {
+			return null;
+		}
 	}
 }
