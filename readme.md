@@ -23,31 +23,6 @@ $ ./mvnw install
 $ ./mvnw springboot:run
 ```
 
-# Questão 1 - Campanha
-
-Uma API de CRUD de campanhas.
-
-### Stack
-
-Campanha utiliza as seguintes tecnologias:
-
-* [Java 8] - Poderosa plataforma de desenvolvimento
-* [Maven] - Ferramenta de automação de construção de projetos
-* [Spring Boot] - Suíte faciltadora de configuração de projetos
-* [Jersey] - Framework de desenvolvimento de aplicações RESTFul
-* [Hibernate] - Framework de persistência Objeto-Relacional
-* [HSQLDB] - SGBD simples para soluções compactas
-
-### Instalação
-
-Instala as dependências e roda o servidor embutido do Springboot
-
-```sh
-$ cd campanha
-$ ./mvnw install
-$ ./mvnw springboot:run
-```
-
 ## RESTful URLs
 
 ### Exemplos de uso das URLs
