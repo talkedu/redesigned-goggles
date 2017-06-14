@@ -23,6 +23,31 @@ $ ./mvnw install
 $ ./mvnw springboot:run
 ```
 
+# Questão 1 - Campanha
+
+Uma API de CRUD de campanhas.
+
+### Stack
+
+Campanha utiliza as seguintes tecnologias:
+
+* [Java 8] - Poderosa plataforma de desenvolvimento
+* [Maven] - Ferramenta de automação de construção de projetos
+* [Spring Boot] - Suíte faciltadora de configuração de projetos
+* [Jersey] - Framework de desenvolvimento de aplicações RESTFul
+* [Hibernate] - Framework de persistência Objeto-Relacional
+* [HSQLDB] - SGBD simples para soluções compactas
+
+### Instalação
+
+Instala as dependências e roda o servidor embutido do Springboot
+
+```sh
+$ cd campanha
+$ ./mvnw install
+$ ./mvnw springboot:run
+```
+
 ## RESTful URLs
 
 ### Exemplos de uso das URLs
@@ -109,19 +134,24 @@ $ ./mvnw springboot:run
         ```
 * Atualizar Campanha
     * PUT http://localhost:8080/campanha/1
+        ```
+          {
+            "idTimeDoCoracao": 2,
+            "dataInicial": "2017-06-08",
+            "dataFinal": "2017-06-16"
+          }
+         ```
     
-    * Após atualizar (e se for o caso atualizar registros que cuja a data final era a igual registro solicitado), retornar uma lista de registros alterados no caminho, inclusive o próprio peidido na requisição
+    * Retornar o registro atualizado
     
     * Exemplo de resultado:
         ```
-        [
           {
             "id": 1,
             "idTimeDoCoracao": 2,
             "dataInicial": "2017-06-08",
             "dataFinal": "2017-06-16"
           }
-        ]
         ```
     
 # Questão 2 - Sócio Torcedor
@@ -282,4 +312,3 @@ MIT
    [Jersey]: <https://jersey.github.io/>
    [Hibernate]: <http://hibernate.org/>
    [HSQLDB]: <http://hsqldb.org/>
-   
