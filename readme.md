@@ -231,7 +231,7 @@ $ ./mvnw springboot:run
         ]
         ```
 * Associar Sócio Torcedor a Campanha
-    * PUT http://localhost:8080/socioTorcedor/1/1
+    * PUT http://localhost:8080/socioTorcedor/1/campanha/1
     
     * Associar Sócio Torcedor id 1 a campanha id 1
     
@@ -275,7 +275,87 @@ $ ./mvnw springboot:run
           "idTimeDoCoracao": 1
         }
         ```
+
+# Questão 3 - Primeira Vogal
+
+Ver código fonte em:
+```sh
+$ cd primeiravogal
+ ```  
+ 
+# Questão 4 - Deadlock
+
+Imagine um conjunto de processos existe um processo esperando por um evento que apenas um processo pode causar. Essa é a definição de Tanenbaum para deadlock ou impasse.
+
+    Um exemplo de deadlock:
     
+    O processo A requisita o recurso R. Ao mesmo tempo o processo B está prendendo o recurso R para si, impendindo que outros processos o utilizem. Ao mesmo tempo, o processo B está requisitando o recurso S, que por sua vez está sendo utilizado pelo recurso. Temos um impasse mútuo aí!
+    
+### Como evitar:
+
+Eis uma situação que poderia causar um deadlock:
+```java
+public void transferir(Conta origem, 
+                            Conta destino, 
+                            BigDecimal quantia) { 
+    synchronized (origem) {
+      synchronized (destino) { 
+        if (origem.temFundo(quantia) { 
+          origem.debita(quantia); 
+          destino.credita(quantia);
+        }
+      }
+    }
+  }
+```    
+
+Em uma determinada thread é chamado:
+
+```java
+transferir(contaA, contaB, quantia);
+```
+
+Ao mesmo tempo que outra thread chama:
+
+```java
+transferir(contaB, contaA, outraQuantia);
+``` 
+
+Nesse caso as duas threads trancaram os dois recursos contaA e contaB. Para resolver isso eu colocaria uma lógica a mais no código:
+
+```java
+public void transferir(Conta origem, 
+                            Conta destino, 
+                            BigDecimal quantia) { 
+    Conta primeiroLock;
+    Conta segundoLock;
+    
+    //Utilizar um método de prioridade para o "lock", nesse caso o id único da conta
+    
+    if (origem.idConta() < destino.idConta()) {
+      primeiroLock = origem;
+      segundoLock = destino;
+    }
+    else {
+      primeiroLock = origem;
+      segundoLock = destino;
+    }
+    
+    //O lock agora é feito com base nessa prioridade e como a transferência é realizada por duas contas diferentes, nunca será possível, mesmo que duas operações ocorram ao mesmo tempo entre as duas contas, que uma conta trave a outra.
+    
+    synchronized (primeiroLock) {
+      synchronized (segundoLock) { 
+        if (origem.temFundo(quantia) { 
+          origem.debita(quantia); 
+          destino.credita(quantia);
+        }
+      }
+    }
+  }
+```
+
+# Questão 5 - Stream X Parallel Stream
+
 Licença
 ----
 
