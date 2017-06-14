@@ -57,7 +57,7 @@ public class SocioTorcedorEndpoint {
 	}
 	
 	@PUT
-	@Path("{idSocioTorcedor}/{idCampanha}")
+	@Path("{idSocioTorcedor}/campanha/{idCampanha}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response associarNovaCampanha(@PathParam("idSocioTorcedor") Long idSocioTorcedor, @PathParam("idCampanha") Long idCampanha) {
 		SocioTorcedor socioTorcedor = socioTorcedorService.recuperarSocioTorcedorPeloId(idSocioTorcedor);		

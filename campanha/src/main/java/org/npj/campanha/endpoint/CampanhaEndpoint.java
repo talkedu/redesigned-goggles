@@ -52,9 +52,13 @@ public class CampanhaEndpoint {
 	}
 	
 	@PUT
-	public Response alterar(Campanha campanha) {
-		List<Campanha> campanhasAlteradas = campanhaService.salvarCampanha(campanha);
-		return Response.status(Status.CREATED).entity(campanhasAlteradas).build();
+	@Path("{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response alterar(@PathParam("id") Long id, Campanha campanha) {	
+		Campanha aux = campanhaService.buscarCampanha(id);
+		campanha.setId(aux.getId());
+		campanhaService.salvarCampanha(campanha);
+		return Response.status(Status.CREATED).entity(campanha).build();
 	}
 	
 	@DELETE

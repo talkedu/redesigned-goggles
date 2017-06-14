@@ -2,6 +2,8 @@ package org.npj.campanha;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
@@ -15,11 +17,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestClientException;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
@@ -35,7 +42,7 @@ public class CampanhaApplicationTests {
 	public void contextLoads() {
 		
 	}
-
+	
 	@Test
 	public void inserirUmaCampanha() throws JSONException {
 
@@ -146,26 +153,65 @@ public class CampanhaApplicationTests {
 	}
 	
 	
-//	@Test
-//	public void deletarUmaCampanha() throws JSONException {
-//		Campanha campanha = new Campanha();
-//		campanha.setIdTimeDoCoracao(1l);
-//
-//		Calendar dataInicialCal = Calendar.getInstance();
-//		Calendar dataFinalCal = (Calendar) dataInicialCal.clone();
-//
-//		dataFinalCal.add(Calendar.DAY_OF_MONTH, 10);
-//
-//		campanha.setDataInicial(dataInicialCal.getTime());
-//		campanha.setDataFinal(dataFinalCal.getTime());
-//
-//		// Insere uma campanha
-//		ResponseEntity<String> response = restTemplate.postForEntity("/campanha", campanha, String.class);
-//
-//		// Deleta a campanha
-//		response = restTemplate. ("/campanha/1", String.class);
-//		
-//		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
-//		JSONAssert.assertEquals("{\"id\":1,\"idTimeDoCoracao\":null,\"dataInicial\":null,\"dataFinal\":null}", response.getBody(), JSONCompareMode.LENIENT);
-//	}
+	@Test
+	public void deletarUmaCampanha() throws JSONException {
+		Campanha campanha = new Campanha();
+		campanha.setIdTimeDoCoracao(1l);
+
+		Calendar dataInicialCal = Calendar.getInstance();
+		Calendar dataFinalCal = (Calendar) dataInicialCal.clone();
+
+		dataFinalCal.add(Calendar.DAY_OF_MONTH, 10);
+
+		campanha.setDataInicial(dataInicialCal.getTime());
+		campanha.setDataFinal(dataFinalCal.getTime());
+
+		// Insere uma campanha
+		ResponseEntity<String> response = restTemplate.postForEntity("/campanha", campanha, String.class);
+
+		// Deleta a campanha
+		response = restTemplate.exchange("/campanha/1", HttpMethod.DELETE, null, String.class);
+		
+		
+		StringBuilder sb = new StringBuilder("{\"id\": 1,\"idTimeDoCoracao\": 1,\"dataInicial\": \"")
+				.append(sdf.format(dataInicialCal.getTime())).append("\",\"dataFinal\": \"")
+				.append(sdf.format(dataFinalCal.getTime())).append("\"}");
+		
+		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+		JSONAssert.assertEquals(sb.toString(), response.getBody(), JSONCompareMode.LENIENT);
+	}
+	
+	
+	@Test
+	public void alterarUmaCampanha() throws JSONException, RestClientException, URISyntaxException {
+		Campanha campanha = new Campanha();
+		campanha.setIdTimeDoCoracao(1l);
+
+		Calendar dataInicialCal = Calendar.getInstance();
+		Calendar dataFinalCal = (Calendar) dataInicialCal.clone();
+
+		dataFinalCal.add(Calendar.DAY_OF_MONTH, 10);
+
+		campanha.setDataInicial(dataInicialCal.getTime());
+		campanha.setDataFinal(dataFinalCal.getTime());
+
+		// Insere uma campanha
+		ResponseEntity<String> response = restTemplate.postForEntity("/campanha", campanha, String.class);
+
+		//Muda o time do coracao
+		campanha.setIdTimeDoCoracao(2l);
+
+		
+		MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>();
+		headers.set("Content-Type", "application/json");
+		
+		response = restTemplate.exchange(new RequestEntity<Campanha>(campanha, headers, HttpMethod.PUT, new URI("/campanha/1")), String.class);
+		
+		StringBuilder sb = new StringBuilder("{\"id\": 1,\"idTimeDoCoracao\": 2,\"dataInicial\": \"")
+				.append(sdf.format(dataInicialCal.getTime())).append("\",\"dataFinal\": \"")
+				.append(sdf.format(dataFinalCal.getTime())).append("\"}");
+		
+		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
+		JSONAssert.assertEquals(sb.toString(), response.getBody(), JSONCompareMode.LENIENT);
+	}
 }

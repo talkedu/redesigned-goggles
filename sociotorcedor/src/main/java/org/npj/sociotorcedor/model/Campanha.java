@@ -1,32 +1,25 @@
 package org.npj.sociotorcedor.model;
 
-import java.io.Serializable;
 import java.util.Date;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
-@Entity
-public class Campanha implements Serializable {
+public class Campanha {
+	public Campanha() {
 
-	private static final long serialVersionUID = 1L;
-	
-	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	}
+
+	public Campanha(Long id) {
+		this.id = id;
+	}
+
 	private Long id;
 	private Long idTimeDoCoracao;
+
+	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT-3")
 	private Date dataInicial;
-	private Date dataFinal;	
-	
-	public Campanha() {
-		
-	}
-	
-	public Campanha(Long id) {
-		this.id = id; 
-	}
+	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT-3")
+	private Date dataFinal;
 
 	public Long getId() {
 		return id;

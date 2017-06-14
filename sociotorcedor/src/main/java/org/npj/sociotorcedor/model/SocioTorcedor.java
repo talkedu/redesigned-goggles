@@ -78,11 +78,11 @@ public class SocioTorcedor {
 	public void setIdTimeDoCoracao(Long idTimeDoCoracao) {
 		IdTimeDoCoracao = idTimeDoCoracao;
 	}
-
+	
 	public List<Long> getIdsCampanhasAssociadas() {
 		return idsCampanhasAssociadas;
 	}
-
+	
 	public void setIdsCampanhasAssociadas(List<Long> idsCampanhasAssociadas) {
 		this.idsCampanhasAssociadas = idsCampanhasAssociadas;
 	}

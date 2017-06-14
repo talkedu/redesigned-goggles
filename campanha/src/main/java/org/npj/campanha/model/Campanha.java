@@ -1,6 +1,5 @@
 package org.npj.campanha.model;
 
-import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Entity;
@@ -11,9 +10,7 @@ import javax.persistence.Id;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
-public class Campanha implements Serializable {
-
-	private static final long serialVersionUID = 1L;
+public class Campanha {
 	
 	public Campanha() {
 		

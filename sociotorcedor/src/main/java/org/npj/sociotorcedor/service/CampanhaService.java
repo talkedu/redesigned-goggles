@@ -1,6 +1,5 @@
 package org.npj.sociotorcedor.service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.ws.rs.client.Client;
@@ -10,8 +9,6 @@ import javax.ws.rs.core.MediaType;
 
 import org.npj.sociotorcedor.model.Campanha;
 import org.springframework.stereotype.Component;
-
-
 
 @Component
 public class CampanhaService {
