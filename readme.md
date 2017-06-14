@@ -73,9 +73,8 @@ $ ./mvnw springboot:run
         	"dataFinal": "2017-06-15"
         }
         ```  
-* Inserir/Atualizar campanha
-    * POST/PUT http://localhost:8080/campanha
-    * A ausência do id determinará que é uma inserção
+* Inserir campanha
+    * POST http://localhost:8080/campanha
         ```
         {	
         	"idTimeDoCoracao": 1,
@@ -83,7 +82,7 @@ $ ./mvnw springboot:run
         	"dataFinal": "2017-06-15"
         }
         ```
-    * Após inserir/atualizar (e se for o caso atualizar registros que cuja a data final era a igual ao último registro), retornar uma lista de registros alterados no caminho
+    * Após inserir (e se for o caso atualizar registros que cuja a data final era a igual ao registro solicitado), retornar uma lista de registros alterados no caminho
     
     * Exemplo de resultado:
         ```
@@ -108,6 +107,28 @@ $ ./mvnw springboot:run
           }
         ]
         ```
+* Atualizar Campanha
+    * PUT http://localhost:8080/campanha/1
+        ```
+          {
+            "idTimeDoCoracao": 2,
+            "dataInicial": "2017-06-08",
+            "dataFinal": "2017-06-16"
+          }
+         ```
+    
+    * Retornar o registro atualizado
+    
+    * Exemplo de resultado:
+        ```
+          {
+            "id": 1,
+            "idTimeDoCoracao": 2,
+            "dataInicial": "2017-06-08",
+            "dataFinal": "2017-06-16"
+          }
+        ```
+    
 # Questão 2 - Sócio Torcedor
 
 ### Instalação
@@ -266,4 +287,3 @@ MIT
    [Jersey]: <https://jersey.github.io/>
    [Hibernate]: <http://hibernate.org/>
    [HSQLDB]: <http://hsqldb.org/>
-   
