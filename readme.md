@@ -356,6 +356,8 @@ public void transferir(Conta origem,
 
 # Questão 5 - Stream X Parallel Stream
 
+Basicamente a diferença é que o acesso aos dados ocorre de forma sequencial na Stream e com várias threads na ParallelStream de forma paralela. É interessante utilizar o ParallelStream quando o gargalo da sua operação é o filtro da massa dos dados, pois ocorrendo de forma paralela tende a tornar mais performática a execução.
+
 Licença
 ----
 
